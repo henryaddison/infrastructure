@@ -14,8 +14,9 @@ parser.add_argument('--memory',  '-m', type=int, nargs='?',             help="me
 parser.add_argument('--queue',         type=str, nargs='?',             help="queue")
 parser.add_argument('--gputype',       type=str, nargs='?',             choices=["GTX1080", "RTX2080", "RTX2080Ti", "RTX3090"], help="{GTX1080, RTX2080, RTX2080Ti, RTX3090}")
 parser.add_argument('--venv',          type=str, nargs='?')
-parser.add_argument('--cmd',           type=str, nargs='*',             help="job command --- must be last argument")
+parser.add_argument('--condaenv',     type=str, nargs='?')
 parser.add_argument('--autoname', action='store_true',                   help="extract output filename based on job --- always uses third argument after --cmd, as in --cmd python file.py output_filename")
+parser.add_argument('cmd',           type=str, nargs='*',             help="job command --- must be last argument")
 #parser.add_argument('ssd', '-s', action=store_true)
 
 # split input args on --cmd
@@ -53,6 +54,10 @@ print('module add lib/hdf5/1.10.6-gcc')
 if args.venv is not None:
     print(f'source {args.venv}/bin/activate')
 print('')
+if args.condaenv is not None:
+    print(f'conda activate {args.condaenv}')
+print('')
+
 
 if args.autoname:
     #directly pipe output to file (so that its available immediately)
