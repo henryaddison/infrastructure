@@ -14,8 +14,9 @@ parser.add_argument('--memory',  '-m', type=int, nargs='?',             help="me
 parser.add_argument('--queue',         type=str, nargs='?',             help="queue")
 parser.add_argument('--gputype',       type=str, nargs='?',             choices=["GTX1080", "RTX2080", "RTX2080Ti", "RTX3090"], help="{GTX1080, RTX2080, RTX2080Ti, RTX3090}")
 parser.add_argument('--venv',          type=str, nargs='?')
-parser.add_argument('--condaenv',     type=str, nargs='?')
-parser.add_argument('--autoname', action='store_true',                   help="extract output filename based on job --- always uses third argument after --cmd, as in --cmd python file.py output_filename")
+parser.add_argument('--condaenv',      type=str, nargs='?')
+parser.add_argument('--jobname',      type=str, help="use a friendly name for the job output")
+parser.add_argument('--autoname', action='store_true',                   help="extract output filename based on job --- assumes uses third argument of cmd, as in python file.py output_filename")
 parser.add_argument('cmd',           type=str, nargs='*',             help="job command --- must be last argument")
 #parser.add_argument('ssd', '-s', action=store_true)
 
@@ -24,6 +25,9 @@ parser.add_argument('cmd',           type=str, nargs='*',             help="job 
 # args = sys.argv[1:cmd_idx]
 args = parser.parse_args()
 cmd = ' '.join(args.cmd)
+
+if args.autoname:
+    args.jobname = cmd.split(' ')[2]
 
 print(f"#!/bin/sh",)
 print(f"#PBS -l walltime={args.hours}:{args.mins}:00")
@@ -42,9 +46,8 @@ if args.queue is not None:
     print(f"#PBS -q {args.queue}")
 
 print(f"#PBS -j oe") #Join stdout and stderr to stdout
-if args.autoname:
-    path = sys.argv[cmd_idx+3]
-    print(f"#PBS -N {os.path.basename(path)}")
+if args.jobname is not None:
+    print(f"#PBS -N {os.path.basename(args.jobname)}")
     print(f"#PBS -o /dev/null") #{path}.o")
 
 print('')
@@ -63,8 +66,8 @@ print('')
 
 print('set -euo pipefail')
 
-if args.autoname:
+if args.jobname is not None:
     #directly pipe output to file (so that its available immediately)
-    print(f"{cmd} 2>&1 | tee {path}.o")
+    print(f"{cmd} 2>&1 | tee {args.jobname}.o")
 else:
     print(cmd)
