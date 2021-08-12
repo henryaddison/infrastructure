@@ -20,10 +20,10 @@ parser.add_argument('cmd',           type=str, nargs='*',             help="job 
 #parser.add_argument('ssd', '-s', action=store_true)
 
 # split input args on cmd
-cmd_idx = sys.argv.index('cmd')
-args = sys.argv[1:cmd_idx]
-args = parser.parse_args(args)
-cmd = ' '.join(sys.argv[(1+cmd_idx):])
+# cmd_idx = sys.argv.index('cmd')
+# args = sys.argv[1:cmd_idx]
+args = parser.parse_args()
+cmd = ' '.join(args.cmd)
 
 print(f"#!/bin/sh",)
 print(f"#PBS -l walltime={args.hours}:{args.mins}:00")
