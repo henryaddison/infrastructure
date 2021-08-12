@@ -48,6 +48,9 @@ if args.autoname:
     print(f"#PBS -o /dev/null") #{path}.o")
 
 print('')
+
+print('source $HOME/.profile')
+
 print('cd $PBS_O_WORKDIR')
 
 print('module add lib/hdf5/1.10.6-gcc')
@@ -58,6 +61,7 @@ if args.condaenv is not None:
     print(f'conda activate {args.condaenv}')
 print('')
 
+print('set -euo pipefail')
 
 if args.autoname:
     #directly pipe output to file (so that its available immediately)
