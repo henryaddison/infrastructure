@@ -3,6 +3,6 @@
 # run lint -g 1 for a single gpu.
 
 TEMP_FILE=$(mktemp)
-lscript $@ --cmd > ${TEMP_FILE}
+lscript $@ > ${TEMP_FILE}
 qsub -I ${TEMP_FILE}
 rm ${TEMP_FILE}
