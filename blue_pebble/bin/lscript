@@ -15,6 +15,7 @@ parser.add_argument('--queue',         type=str, nargs='?',             help="qu
 parser.add_argument('--gputype',       type=str, nargs='?',             choices=["GTX1080", "RTX2080", "RTX2080Ti", "RTX3090"], help="{GTX1080, RTX2080, RTX2080Ti, RTX3090}")
 parser.add_argument('--venv',          type=str, nargs='?')
 parser.add_argument('--condaenv',      type=str, nargs='?')
+parser.add_argument('--workdir',       type=str, nargs='?', default='$HOME')
 parser.add_argument('--jobname',      type=str, help="use a friendly name for the job output")
 parser.add_argument('--autoname', action='store_true',                   help="extract output filename based on job --- assumes uses third argument of cmd, as in python file.py output_filename")
 parser.add_argument('cmd',           type=str, nargs='*',             help="job command --- must be last argument")
@@ -65,6 +66,8 @@ if args.condaenv is not None:
 print('')
 
 print('set -euo pipefail')
+
+print(f'cd {args.workdir}')
 
 if args.jobname is not None:
     #directly pipe output to file (so that its available immediately)
