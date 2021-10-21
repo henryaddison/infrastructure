@@ -15,6 +15,7 @@ parser.add_argument('--queue',         type=str, nargs='?',             help="qu
 parser.add_argument('--gputype',       type=str, nargs='?',             choices=["GTX1080", "RTX2080", "RTX2080Ti", "RTX3090"], help="{GTX1080, RTX2080, RTX2080Ti, RTX3090}")
 parser.add_argument('--venv',          type=str, nargs='?')
 parser.add_argument('--condaenv',      type=str, nargs='?')
+parser.add_argument('--module-list',   type=str, nargs='?')
 parser.add_argument('--workdir',       type=str, nargs='?', default='$HOME')
 parser.add_argument('--jobname',      type=str, help="use a friendly name for the job output")
 parser.add_argument('--autoname', action='store_true',                   help="extract output filename based on job --- assumes uses third argument of cmd, as in python file.py output_filename")
@@ -57,7 +58,8 @@ print('source $HOME/.profile')
 
 print('cd $PBS_O_WORKDIR')
 
-print('module add lib/hdf5/1.10.6-gcc')
+if args.module_list is not None:
+    print(f'module restore {args.module_list}')
 if args.venv is not None:
     print(f'source {args.venv}/bin/activate')
 print('')
