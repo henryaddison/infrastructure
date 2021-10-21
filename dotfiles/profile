@@ -1,0 +1,8 @@
+source ~/.bashrc
+
+module restore
+
+export PATH=$PATH:$HOME/code/infrastructure/blue_pebble/bin/
+
+export CEDA_USERNAME=xxx
+export CEDA_PASSWORD=xxx
