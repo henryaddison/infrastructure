@@ -50,7 +50,7 @@ if args.queue is not None:
 print(f"#PBS -j oe") #Join stdout and stderr to stdout
 if args.jobname is not None:
     print(f"#PBS -N {os.path.basename(args.jobname)}")
-    print(f"#PBS -o /dev/null") #{path}.o")
+    print(f"#PBS -o {args.jobname}.scheduler.o")
 
 print('')
 
@@ -73,6 +73,6 @@ print(f'cd {args.workdir}')
 
 if args.jobname is not None:
     #directly pipe output to file (so that its available immediately)
-    print(f"{cmd} 2>&1 | tee {args.jobname}.o")
+    print(f"{cmd} 2>&1 | tee {args.jobname}.work.o")
 else:
     print(cmd)
