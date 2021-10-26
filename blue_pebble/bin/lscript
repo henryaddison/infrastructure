@@ -49,8 +49,7 @@ if args.queue is not None:
 
 print(f"#PBS -j oe") #Join stdout and stderr to stdout
 if args.jobname is not None:
-    print(f"#PBS -N {os.path.basename(args.jobname)}")
-    print(f"#PBS -o {args.jobname}.scheduler.o")
+    print(f"#PBS -N {args.jobname}")
 
 print('')
 
