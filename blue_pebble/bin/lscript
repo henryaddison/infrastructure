@@ -72,6 +72,6 @@ print(f'cd {args.workdir}')
 
 if args.jobname is not None:
     #directly pipe output to file (so that its available immediately)
-    print(f"{cmd} 2>&1 | tee {args.jobname}.work.o")
+    print(f"{cmd} 2>&1 | tee {args.jobname}.work.o${{PBS_JOBID}}")
 else:
     print(cmd)
