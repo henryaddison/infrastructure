@@ -1,13 +1,11 @@
 #!/bin/env python
 
-import os
-import sys
 import argparse
-import subprocess
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--cpus',    '-c', type=int, nargs='?', default=1)
 parser.add_argument('--gpus',    '-g', type=int, nargs='?')
+parser.add_argument('--days',    '-d', type=int, nargs='?', default=0, help="time in days")
 parser.add_argument('--hours',   '-t', type=int, nargs='?', default=23, help="time in hours")
 parser.add_argument('--mins',          type=int, nargs='?', default=0, help="time in mins")
 parser.add_argument('--memory',  '-m', type=int, nargs='?',             help="memory in gp")
@@ -32,30 +30,30 @@ if args.autoname:
     args.jobname = cmd.split(' ')[2]
 
 print(f"#!/bin/sh",)
-print(f"#PBS -l walltime={args.hours}:{args.mins}:00")
-select = f"#PBS -l select=1:ncpus={args.cpus}"
+print(f"#SBATCH --time={args.days}-{str(args.hours).zfill(2)}:{str(args.mins).zfill(2)}:00")
+print(f"#SBATCH --nodes=1")
+print(f"#SBATCH --ntasks-per-node=={args.cpus}")
 
 if args.memory is not None:
-    select = select + f":mem={args.memory}gb"
-if args.gpus is not None:
-    select = select + f":ngpus={args.gpus}"
-if args.gputype is not None:
-    select = select + f":gputype={args.gputype}"
-
-print(select)
+    print(f"#SBATCH --mem={args.memory}gb")
+if args.gpus:
+    gpu_specs=[str(args.gpus)]
+    if args.gputype:
+        gpu_specs.insert(0, args.gputype)
+    gpu_spec = ":".join(gpu_specs)
+    print(f"#SBATCH --gres=gpu:{gpu_spec}")
 
 if args.queue is not None:
-    print(f"#PBS -q {args.queue}")
+    print(f"#SBATCH --partition={args.queue}")
 
-print(f"#PBS -j oe") #Join stdout and stderr to stdout
 if args.jobname is not None:
-    print(f"#PBS -N {args.jobname}")
+    print(f"#SBATCH --job-name={args.jobname}")
 
 print('')
 
 print('source $HOME/.profile')
 
-print('cd $PBS_O_WORKDIR')
+print('cd $SLURM_SUBMIT_DIR')
 
 if args.module_list is not None:
     print(f'module restore {args.module_list}')
@@ -72,6 +70,6 @@ print(f'cd {args.workdir}')
 
 if args.jobname is not None:
     #directly pipe output to file (so that its available immediately)
-    print(f"{cmd} 2>&1 | tee {args.jobname}.work.o${{PBS_JOBID}}")
+    print(f"{cmd} 2>&1 | tee {args.jobname}.work.o${{SLURM_JOB_ID}}")
 else:
     print(cmd)
