@@ -18,11 +18,7 @@ parser.add_argument('--workdir',       type=str, nargs='?', default='$HOME')
 parser.add_argument('--jobname',      type=str, help="use a friendly name for the job output")
 parser.add_argument('--autoname', action='store_true',                   help="extract output filename based on job --- assumes uses third argument of cmd, as in python file.py output_filename")
 parser.add_argument('cmd',           type=str, nargs='*',             help="job command --- must be last argument")
-#parser.add_argument('ssd', '-s', action=store_true)
 
-# split input args on cmd
-# cmd_idx = sys.argv.index('cmd')
-# args = sys.argv[1:cmd_idx]
 args = parser.parse_args()
 cmd = ' '.join(args.cmd)
 
