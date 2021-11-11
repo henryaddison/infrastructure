@@ -28,7 +28,7 @@ if args.autoname:
 print(f"#!/bin/sh",)
 print(f"#SBATCH --time={args.days}-{str(args.hours).zfill(2)}:{str(args.mins).zfill(2)}:00")
 print(f"#SBATCH --nodes=1")
-print(f"#SBATCH --ntasks-per-node=={args.cpus}")
+print(f"#SBATCH --ntasks-per-node={args.cpus}")
 
 if args.memory is not None:
     print(f"#SBATCH --mem={args.memory}gb")
