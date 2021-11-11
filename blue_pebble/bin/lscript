@@ -26,24 +26,30 @@ if args.autoname:
     args.jobname = cmd.split(' ')[2]
 
 print(f"#!/bin/sh",)
-print(f"#SBATCH --time={args.days}-{str(args.hours).zfill(2)}:{str(args.mins).zfill(2)}:00")
-print(f"#SBATCH --nodes=1")
-print(f"#SBATCH --ntasks-per-node={args.cpus}")
+
+options = {}
+
+options["time"] = f"{args.days}-{str(args.hours).zfill(2)}:{str(args.mins).zfill(2)}:00"
+options["nodes"] = f"1"
+options["ntasks-per-node"] = f"{args.cpus}"
 
 if args.memory is not None:
-    print(f"#SBATCH --mem={args.memory}gb")
+    options["mem"] = f"{args.memory}gb"
 if args.gpus:
     gpu_specs=[str(args.gpus)]
     if args.gputype:
         gpu_specs.insert(0, args.gputype)
     gpu_spec = ":".join(gpu_specs)
-    print(f"#SBATCH --gres=gpu:{gpu_spec}")
+    options["gres"] = f"gpu:{gpu_spec}"
 
 if args.queue is not None:
-    print(f"#SBATCH --partition={args.queue}")
+    options["partition"] = f"{args.queue}"
 
 if args.jobname is not None:
-    print(f"#SBATCH --job-name={args.jobname}")
+    options["job-name"] = f"{args.jobname}"
+
+for key, value in options.items():
+    print(f"#SBATCH {key}={value}")
 
 print('')
 
