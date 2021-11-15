@@ -1,8 +1,46 @@
-#!/bin/sh
+#!/bin/env python
+
 # run lint for a standard interactive node.
 # run lint -g 1 for a single gpu.
 
-TEMP_FILE=$(mktemp)
-lscript $@ > ${TEMP_FILE}
-srun ${TEMP_FILE}
-rm ${TEMP_FILE}
+import os
+
+from args_lib import get_opts
+
+options = get_opts()
+
+cli_opts = list(map(lambda key: f"--{key}={options[key]}", options))
+
+int_cmd = ["srun"] + cli_opts + ["--pty", "bash"]
+
+print(int_cmd[0], int_cmd)
+
+os.execvp(int_cmd[0], int_cmd)
+
+# print(f"#!/bin/sh",)
+
+# for key, value in options.items():
+#     print(f"#SBATCH --{key}={value}")
+
+# print('')
+
+# print('source $HOME/.profile')
+
+# print('cd $SLURM_SUBMIT_DIR')
+
+# if args.module_list is not None:
+#     print(f'module restore {args.module_list}')
+# if args.venv is not None:
+#     print(f'source {args.venv}/bin/activate')
+# if args.condaenv is not None:
+#     print(f'conda activate {args.condaenv}')
+
+# print('set -euo pipefail')
+
+# print(f'cd {args.workdir}')
+
+# if args.jobname is not None:
+#     #directly pipe output to file (so that its available immediately)
+#     print(f"{cmd} 2>&1 | tee {args.jobname}.work.o${{SLURM_JOB_ID}}")
+# else:
+#     print(cmd)
