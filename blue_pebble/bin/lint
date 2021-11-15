@@ -1,8 +1,17 @@
-#!/bin/sh
+#!/bin/env python
 # run lint for a standard interactive node.
 # run lint -g 1 for a single gpu.
 
-TEMP_FILE=$(mktemp)
-lscript $@ > ${TEMP_FILE}
-qsub -I ${TEMP_FILE}
-rm ${TEMP_FILE}
+import os
+
+from args_lib import get_slurm_opts
+
+options = get_slurm_opts()
+
+cli_opts = list(map(lambda key: f"--{key}={options[key]}", options))
+
+int_cmd = ["srun"] + cli_opts + ["--pty", "bash"]
+
+print(int_cmd[0], int_cmd)
+
+os.execvp(int_cmd[0], int_cmd)
