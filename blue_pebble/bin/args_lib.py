@@ -38,12 +38,14 @@ def get_slurm_opts(args=None):
 
     if args.memory is not None:
         options["mem"] = f"{args.memory}gb"
+
     if args.gpus:
-        gpu_specs=[str(args.gpus)]
+        gpu_specs=["gpu"]
         if args.gputype:
-            gpu_specs.insert(0, args.gputype)
-        gpu_spec = ":".join(gpu_specs)
-        options["gres"] = f"gpu:{gpu_spec}"
+            gpu_specs.append(args.gputype)
+        gpu_specs.append(str(args.gpus))
+
+        options["gres"] = ":".join(gpu_specs)
 
     if args.queue is not None:
         options["partition"] = f"{args.queue}"
