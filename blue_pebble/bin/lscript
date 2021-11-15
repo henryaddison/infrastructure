@@ -10,7 +10,7 @@ options = get_slurm_opts(args)
 print(f"#!/bin/sh",)
 
 for key, value in options.items():
-    print(f"#SBATCH {key}={value}")
+    print(f"#SBATCH --{key}={value}")
 
 print('')
 
