@@ -13,21 +13,22 @@ def get_args():
     parser.add_argument('--venv',          type=str, nargs='?')
     parser.add_argument('--condaenv',      type=str, nargs='?')
     parser.add_argument('--module-list',   type=str, nargs='?')
-    parser.add_argument('--workdir',       type=str, nargs='?', default='$HOME')
+    parser.add_argument('--workdir',       type=str, nargs='?', default='$SLURM_SUBMIT_DIR')
     parser.add_argument('--jobname',      type=str, help="use a friendly name for the job output")
     parser.add_argument('--autoname', action='store_true',                   help="extract output filename based on job --- assumes uses third argument of cmd, as in python file.py output_filename")
     parser.add_argument('cmd',           type=str, nargs='*',             help="job command --- must be last argument")
 
     args = parser.parse_args()
-    cmd = ' '.join(args.cmd)
+    args.cmd = ' '.join(args.cmd)
 
     if args.autoname:
-        args.jobname = cmd.split(' ')[2]
+        args.jobname = args.cmd.split(' ')[2]
 
     return args
 
-def get_opts():
-    args = get_args()
+def get_slurm_opts(args=None):
+    if args is None:
+        args = get_args()
 
     options = {}
 

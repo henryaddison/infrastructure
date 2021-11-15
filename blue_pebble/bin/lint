@@ -1,13 +1,12 @@
 #!/bin/env python
-
 # run lint for a standard interactive node.
 # run lint -g 1 for a single gpu.
 
 import os
 
-from args_lib import get_opts
+from args_lib import get_slurm_opts
 
-options = get_opts()
+options = get_slurm_opts()
 
 cli_opts = list(map(lambda key: f"--{key}={options[key]}", options))
 
