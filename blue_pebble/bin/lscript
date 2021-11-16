@@ -7,12 +7,14 @@ from args_lib import get_args, get_slurm_opts
 args = get_args()
 options = get_slurm_opts(args)
 
-print(f"#!/bin/sh",)
+print(f"#!/bin/bash",)
 
 for key, value in options.items():
     print(f"#SBATCH --{key}={value}")
 
 print('')
+
+print("source ~/.bashrc")
 
 if args.module_list is not None:
     print(f'module restore {args.module_list}')
