@@ -11,4 +11,4 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-lsub $@ -- jupyter notebook --port ${port} --no-browser
+lsub_nonblock $@ -- jupyter notebook --port ${port} --no-browser
