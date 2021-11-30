@@ -1,19 +1,14 @@
 #!/bin/env bash
 
-POSITIONAL=()
 while [[ $# -gt 0 ]]; do
   key="$1"
   case $key in
     --port)
       port="$2"
-      shift # past argument
-      shift # past value
       ;;
     *) # other options assumed to be for lscript
-      POSITIONAL+=("$1") # save it in an array for later
-      shift # past argument
       ;;
   esac
 done
 
-lsub ${POSITIONAL[@]} -- bp_tunnelled_jupyter ${port}
+lsub $@ -- jupyter notebook --port ${port} --no-browser
