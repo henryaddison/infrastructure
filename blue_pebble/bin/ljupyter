@@ -16,4 +16,4 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-lscript $POSITIONAL -- bp_tunnelled_jupyter $port | sbatch
+lsub $POSITIONAL -- bp_tunnelled_jupyter $port
