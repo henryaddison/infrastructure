@@ -16,4 +16,4 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-lsub $POSITIONAL -- bp_tunnelled_jupyter $port
+lsub ${POSITIONAL} -- bp_tunnelled_jupyter ${port}
