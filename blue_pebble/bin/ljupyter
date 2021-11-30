@@ -1,0 +1,5 @@
+#!/bin/sh
+
+port=$1
+
+lscript $@ -- bp_tunnelled_jupyter $port | sbatch

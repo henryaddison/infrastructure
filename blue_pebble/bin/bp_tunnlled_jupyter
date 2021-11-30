@@ -1,0 +1,12 @@
+#!/bin/bash
+
+port=$1
+#Forward the picked port to the prince on the same port. Here log-x is set to be the prince login node.
+/usr/bin/ssh -N -f -R $port:localhost:$port bp1-login01.data.bp.acrc.priv
+/usr/bin/ssh -N -f -R $port:localhost:$port bp1-login02.data.bp.acrc.priv
+/usr/bin/ssh -N -f -R $port:localhost:$port bp1-login03.data.bp.acrc.priv
+/usr/bin/ssh -N -f -R $port:localhost:$port bp1-login04.data.bp.acrc.priv
+/usr/bin/ssh -N -f -R $port:localhost:$port bp1-login05.data.bp.acrc.priv
+
+#Start the notebook
+jupyter notebook --no-browser --port $port
