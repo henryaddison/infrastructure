@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/env bash
 
 POSITIONAL=()
 while [[ $# -gt 0 ]]; do
@@ -15,5 +15,7 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+echo ${POSITIONAL}
 
 lsub ${POSITIONAL} -- bp_tunnelled_jupyter ${port}
