@@ -16,6 +16,7 @@ def get_args():
     parser.add_argument('--workdir',       type=str, nargs='?', default='$SLURM_SUBMIT_DIR')
     parser.add_argument('--jobname',      type=str, help="use a friendly name for the job output")
     parser.add_argument('--autoname', action='store_true',                   help="extract output filename based on job --- assumes uses third argument of cmd, as in python file.py output_filename")
+    parser.add_argument('--port',          type=str, nargs='*', help="ports to ssh tunnel back to login nodes")
     parser.add_argument('cmd',           type=str, nargs='*',             help="job command --- must be last argument")
 
     args = parser.parse_args()
