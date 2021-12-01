@@ -30,6 +30,7 @@ if args.jobname is not None:
 
 print('')
 
+print("source ~/.bashrc")
 if args.module_list is not None:
     print(f'module restore {args.module_list}')
 if args.venv is not None:
