@@ -1,5 +1,7 @@
 # Work on a Jupyter notebook on Blue Pebble
 
+This guide is based on [these excellent notes by Utku Evci](http://www.utkuevci.com/notes/port-forwarding/).
+
 The simplest option to run the Jupyter server on the login node.
 However, sometimes this is not desirable. Perhaps you want more resources than a login node provides or you don't want to have to manage keeping the process running if you don't maintain a network connection.
 
