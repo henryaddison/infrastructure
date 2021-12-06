@@ -39,7 +39,6 @@ if args.condaenv is not None:
     print(f'conda activate {args.condaenv}')
 
 print('set -euo pipefail')
-print('shopt -s inherit_errexit')
 
 print(f'cd {args.workdir}')
 

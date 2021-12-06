@@ -1,6 +1,5 @@
 #!/bin/bash
 
 set -euo pipefail
-shopt -s inherit_errexit
 
 lscript $@ | sbatch -W $(lcmd $@)
