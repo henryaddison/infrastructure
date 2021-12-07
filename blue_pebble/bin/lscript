@@ -12,17 +12,20 @@ parser.add_argument('--module-list',   type=str, nargs='?')
 parser.add_argument('--workdir',       type=str, nargs='?', default='$SLURM_SUBMIT_DIR')
 parser.add_argument('--jobname',       type=str, help="use a friendly name for the job output")
 parser.add_argument('--port',          type=str, nargs='*',             help="ports to open ssh tunnels back to login nodes")
-parser.add_argument('--cmd',           type=str, nargs='*',             help="job command --- must be last argument, use -- to separate it from rest of options for safety")
 parser.add_argument('--autoname', action='store_true',                   help="extract output filename based on job --- always uses third part of cmd argument, as in -- python file.py output_filename")
 #parser.add_argument('ssd', '-s', action=store_true)
+parser.add_argument('cmd',           type=str, nargs="*",             help="job command --- must be last argument, use -- to separate it from rest of options for safety")
 
-args, _ = parser.parse_known_args()
-cmd = ' '.join(args.cmd)
-
-print(f"#!/bin/sh",)
+# split input args on --
+cmd_idx = sys.argv.index('--')
+args = sys.argv[1:cmd_idx]
+args, _ = parser.parse_known_args(args)
+cmd = sys.argv[(1+cmd_idx):]
 
 if args.autoname:
-    args.jobname = args.cmd.split(' ')[2]
+    args.jobname = cmd[2]
+
+print(f"#!/bin/sh",)
 
 if args.jobname is not None:
     print(f"#SBATCH --job-name={os.path.basename(args.jobname)}")
@@ -52,6 +55,6 @@ print('')
 
 if args.autoname:
     #directly pipe output to file (so that its available immediately)
-    print(f"{cmd} 2>&1 | tee {args.jobname}.o")
+    print(f"{' '.join(cmd)} 2>&1 | tee {args.jobname}.o")
 else:
-    print(cmd)
+    print(' '.join(cmd))
