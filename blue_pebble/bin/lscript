@@ -53,8 +53,4 @@ if args.port:
 print('module add lib/hdf5/1.10.6-gcc')
 print('')
 
-if args.autoname:
-    #directly pipe output to file (so that its available immediately)
-    print(f"{' '.join(cmd)} 2>&1 | tee {args.jobname}.o")
-else:
-    print(' '.join(cmd))
+print(' '.join(cmd))
