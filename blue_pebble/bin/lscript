@@ -29,7 +29,7 @@ print(f"#!/bin/sh",)
 
 if args.jobname is not None:
     print(f"#SBATCH --job-name={os.path.basename(args.jobname)}")
-    print(f"#SBATCH --output={args.jobname}.o${{SLURM_JOB_ID}}")
+    print(f"#SBATCH --output={args.jobname}.o")
 
 print('')
 
