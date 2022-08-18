@@ -35,7 +35,7 @@ if args.queue is not None:
     cmd = cmd + f" --partition {args.queue}"
 
 if args.array is not None:
-    cmd = cmd + f" --array {args.queue}"
+    cmd = cmd + f" --array {args.array}"
 
 if args.gpus is not None:
     if args.gputype is not None:
