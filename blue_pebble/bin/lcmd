@@ -10,6 +10,7 @@ parser.add_argument('--hours',   '-t', type=int, nargs='?', default=1,  help="ti
 parser.add_argument('--mins',          type=int, nargs='?', default=0,  help="time in mins")
 parser.add_argument('--memory',  '-m', type=int, nargs='?', default=22, help="memory in gp")
 parser.add_argument('--queue',   '-q', type=str, nargs='?',             help="queue")
+parser.add_argument('--array',         type=str, nargs='?',             help="submit an array job")
 parser.add_argument('--gputype',       type=str, nargs='?'             )#choices=["GTX1080", "RTX2080", "RTX2080Ti", "RTX3090"], help="{GTX1080, RTX2080, RTX2080Ti, RTX3090}")
 
 # remove args after --cmd, if present
@@ -32,6 +33,9 @@ if args.memory is not None:
 
 if args.queue is not None:
     cmd = cmd + f" --partition {args.queue}"
+
+if args.array is not None:
+    cmd = cmd + f" --array {args.queue}"
 
 if args.gpus is not None:
     if args.gputype is not None:
