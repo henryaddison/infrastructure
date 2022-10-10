@@ -12,6 +12,7 @@ parser.add_argument('--memory',  '-m', type=int, nargs='?', default=22, help="me
 parser.add_argument('--queue',   '-q', type=str, nargs='?',             help="queue")
 parser.add_argument('--array',         type=str, nargs='?',             help="submit an array job")
 parser.add_argument('--gputype',       type=str, nargs='?'             )#choices=["GTX1080", "RTX2080", "RTX2080Ti", "RTX3090"], help="{GTX1080, RTX2080, RTX2080Ti, RTX3090}")
+parser.add_argument('--depends-on', '-d', type=int, nargs='?',  help="job id to wait on")
 
 # remove args after --cmd, if present
 if "--cmd" in sys.argv:
@@ -22,6 +23,8 @@ else:
 args,_ = parser.parse_known_args(arglist)
 
 cmd = ""
+
+cmd = cmd + " --parseable"
 
 days = args.hours//24
 hours = args.hours % 24
@@ -42,5 +45,8 @@ if args.gpus is not None:
         cmd = cmd + f" --gpus={args.gputype}:{args.gpus}"
     else:
         cmd = cmd + f" --gpus={args.gpus}"
+
+if args.depends_on is not None:
+    cmd = cmd + f" --dependency=afterok:{args.depends_on}"
 
 print(cmd)
