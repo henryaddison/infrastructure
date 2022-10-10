@@ -24,7 +24,7 @@ args,_ = parser.parse_known_args(arglist)
 
 cmd = ""
 
-cmd = cmd + " --parseable"
+cmd = cmd + " --parseable --mail-type=ALL --mail-user=vf20964@bristol.ac.uk"
 
 days = args.hours//24
 hours = args.hours % 24
