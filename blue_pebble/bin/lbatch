@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-lscript $@ | sbatch $(lcmd $@)
+lscript $@ | sbatch --parsable $(lcmd $@)
