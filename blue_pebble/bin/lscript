@@ -12,6 +12,7 @@ parser.add_argument('--module-list',   type=str, nargs='?')
 parser.add_argument('--workdir',       type=str, nargs='?', default='$SLURM_SUBMIT_DIR')
 parser.add_argument('--jobname',       type=str, help="use a friendly name for the job output")
 parser.add_argument('--port',          type=str, nargs='*',             help="ports to open ssh tunnels back to login nodes")
+parser.add_argument('--gpus',    '-g', type=int, nargs='?')
 parser.add_argument('--autoname', action='store_true',                   help="extract output filename based on job --- always uses third part of cmd argument, as in -- python file.py output_filename")
 #parser.add_argument('ssd', '-s', action=store_true)
 parser.add_argument('cmd',           type=str, nargs="*",             help="job command --- must be last argument, use -- to separate it from rest of options for safety")
@@ -44,6 +45,10 @@ if args.condaenv is not None:
 print('set -euo pipefail')
 
 print(f'cd {args.workdir}')
+
+if args.gpus is not None:
+    # print state of GPU for debugging
+    print('nvidia-smi')
 
 if args.port:
     for i in range(1,6):
