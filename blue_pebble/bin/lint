@@ -2,4 +2,4 @@
 
 set -euo pipefail
 
-srun $(lcmd $@) --pty bash -i
+srun $(lcmd --interactive $@) --mpi=pmi2 --pty bash -i
