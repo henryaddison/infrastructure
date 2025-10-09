@@ -2,11 +2,20 @@
 
 set -euo pipefail
 
+host=bp
 port=$(shuf -i 6000-9999 -n 1)
 echo "Using port $port"
 echo "Once the job has started on the cluster, navigate to http://localhost:${port}"
-echo "If the connection closes prematurely then run 'ssh -N -L ${port}:localhost:${port} bp' to re-open the tunnel."
+echo "If the connection closes prematurely then run 'ssh -N -L ${port}:localhost:${port} ${host}' to re-open the tunnel."
 
-ssh -t -L ${port}:localhost:${port} bp "lsub $@ --port ${port} --cmd 'jupyter notebook --no-browser --port ${port}'"
+set -x
+ssh -t -L ${port}:localhost:${port} ${host} lsub $@ --port ${port} -- "jupyter notebook --no-browser --port ${port} --NotebookApp.allow_origin='*' --NotebookApp.ip='0.0.0.0'"
+set +x
+# echo ${cmd}
+# $(${cmd})
+
+# # ssh -t -L ${port}:localhost:${port} ${host} "lsub $@ --port ${port} -- 'jupyter notebook --no-browser --port ${port}  --NotebookApp.allow_origin='*' --NotebookApp.ip='0.0.0.0''"
+
+# # lbatch --hours 8 -a PROJECT_CODE --port ${port} --cmd "jupyter notebook --no-browser --port ${port} --NotebookApp.allow_origin='*' --NotebookApp.ip='0.0.0.0'"
 
 echo "Connection closed. Please make sure the job is cancelled."
